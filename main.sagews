@@ -32,17 +32,6 @@ for i in range(m):
 print "Public Key is: ",PK
 
 #ENCRYPTION--------------------------------------------
-Keyboard=[' ','!','"','#','$']
-BinaryKeyboard=["00100000","00100001","00100010","00100011","00100100"]
-
-test="!"
-index=0
-for i in range(len(test)):
-    if(test[i]==Keyboard[i]):
-        index=i
-    test=Keyboard[index]
-print test
-    
 #A message in binary
 Message=[0,1,1,0,1,0,1,1,0,0]
 Messagelength=10
@@ -72,21 +61,10 @@ for i in range(Messagelength):
     	        S[ci,l]=PK[rand,l]
     print "Random Set is: ",S
     print "----------------------"
-    sumOfB=0    #this is the variable that will hold the sum of b,of last column
     for k in range(n+1):
         for j in range(Ssize):
             #In each column of EncryptedMessage, the sum of A parameters of each of column of S is entered,except for the last one
-            if(k<n):
-                EncryptedMessage[i,k]+=S[j,k]
-            else:
-                sumOfB +=S[j,k]
-        #The sum is mod p
-        EncryptedMessage[i,k]=Mod(EncryptedMessage[i,k],p)
-    if Message[i]==0:
-        #If the bit is 0, we enter in the second column of EncryptedMessage the sum of B of S.
-        EncryptedMessage[i,n]=Mod(sumOfB,p)
-    else:
-        #If the bit is 1, we enter in the second column of EncryptedMessage the sum of the floor of p/2 plus Β of S.
-        EncryptedMessage[i,n]=Mod(sumOfB+floor(p/2),p)
+                EncryptedMessage[i,k]+=Mod(S[j,k],p)
+    if Message[i]==1:
+        EncryptedMessage[i,n]=Mod(EncryptedMessage[i,n]+floor(p/2),p)
     print EncryptedMessage
-
